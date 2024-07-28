@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+    es-learner:
+        container_name: 'es-learner'
+        hostname: 'es-learner'
+        image: docker.elastic.co/elasticsearch/elasticsearch:7.7.0
+        ports:
+            - '9200:9200'
+            - '9300:9300'
+        environment:
+            - 'discovery.type=single-node'
+            - 'ES_JAVA_OPTS=-Xms512m -Xmx512m'
+            # - XPACK_MONITORING_ENABLED=true # [..] Read more: https://www.elastic.co/guide/en/elasticsearch/reference/7.7/elasticsearch-security.html
+            # - ELASTICSEARCH_USERNAME=elastic
+            # - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+
+    kibana-learner:
+        container_name: 'kibana-learner'
+        hostname: 'kibana-learner'
+        image: docker.elastic.co/kibana/kibana:7.7.0
+        ports:
+            - '5601:5601'
+        environment:
+            - SERVER_HOST=0.0.0.0
+            - ELASTICSEARCH_HOSTS=http://es-learner:9200
